@@ -1,0 +1,80 @@
+{
+  "questionId": "194227",
+  "id": "129108",
+  "snapshotId": "194227",
+  "originalQuestionId": "194227",
+  "relationId": "j3ne2Ds47llzkHWbgnH4KmPFImmZp4Yx3hkhd4MsfYuMfrcOE1RkIJ3gb7Ne-2fqxvt5mXgQk3o1wmRXxg5OTZy-2bKgREbCuof1acnumoc-2fLAg-3d",
+  "subjectEnglish": "",
+  "label": "",
+  "paperId": "638999999999",
+  "subjectId": 0,
+  "subjectQuestionType": 1010101,
+  "subjectQuestionTypeName": "单选题",
+  "answerArea": 0,
+  "paperCount": 0,
+  "questionContent": "下列各句中“焉”字的用法不同于其他三项的是（　　）",
+  "questionContentWithScore": "下列各句中“焉”字的用法不同于其他三项的是（　　）",
+  "questionScoreShowPlace": 0,
+  "optionsObjectList": [
+    {
+      "choice": "A",
+      "option": "积土成山，风雨兴焉"
+    },
+    {
+      "choice": "B",
+      "option": "斯天下之民至焉"
+    },
+    {
+      "choice": "C",
+      "option": "朝济而夕设版焉"
+    },
+    {
+      "choice": "D",
+      "option": "神明自得，圣心备焉"
+    }
+  ],
+  "answersList": [
+    "A"
+  ],
+  "parse": "本题考查文言虚词的意义和用法，应在准确理解句意的基础上，从语法的角度，判断相应虚词的用法和意义。",
+  "explain": "A．兼词，于此；<br />BCD．句末语气词，了、啊、呢或不译；<br />故选：A。",
+  "sort": 0,
+  "questionNo": 1,
+  "questionNoShow": "1",
+  "parentId": "0",
+  "score": 0.0,
+  "scoreStandard": "",
+  "groupId": 25134,
+  "source": 2,
+  "sourceName": "三方题库-菁优",
+  "cateId": 1,
+  "isSubjective": 0,
+  "isHaveSon": 0,
+  "cateName": "单选题",
+  "isFavorites": 0,
+  "isInPaper": 0,
+  "knowledgeLessonIds": [],
+  "customizeLessonIds": [],
+  "difficult": 7,
+  "jyeooKnowledgeList": [
+    {
+      "id": "312213",
+      "name": "文言虚词",
+      "description": null
+    }
+  ],
+  "updateFlag": 0,
+  "knowledgeTransList": [
+    {
+      "id": "312094",
+      "name": "常考虚词",
+      "description": null
+    }
+  ],
+  "questionSnapshotId": 0,
+  "questionSubGroupName": "",
+  "questionSubGroupNameNo": "",
+  "questionSubGroupRomanNumbers": "",
+  "difficultName": "较易",
+  "checkDuplicateStatus": 0
+}
