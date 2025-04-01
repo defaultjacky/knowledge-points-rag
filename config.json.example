@@ -1,0 +1,7 @@
+{
+  "useNeo4j": false,
+  "neo4jUri": "neo4j://localhost:7687",
+  "neo4jUsername": "neo4j",
+  "neo4jPassword": "password",
+  "neo4jDatabase": "neo4j"
+}

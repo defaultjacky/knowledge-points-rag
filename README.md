@@ -1,13 +1,56 @@
-# 知识点树 RAG 转换工具
+# 知识点树与题目推荐系统
 
-这个项目提供了一套工具，用于将结构化的知识点树数据转换为适合检索增强生成(RAG)系统使用的格式。
+这个项目提供了一套完整的知识图谱与题目推荐系统，基于RAG（检索增强生成）技术构建，用于教育领域的知识点管理和题目推荐。
 
 ## 项目简介
 
-本项目包含两个主要脚本：
+本项目包含以下主要功能：
 
-1. `extract-knowledge-points.js` - 从原始JSON格式的知识点树中提取知识点，并转换为扁平化的JSON结构
-2. `convert-to-rag-format.js` - 将扁平化的知识点JSON转换为CSV格式，适合RAG系统使用
+1. 知识点树数据处理与转换
+2. 知识图谱构建
+3. 基于知识图谱的题目推荐
+4. RESTful API接口服务
+
+## 安装与运行
+
+### 环境要求
+
+- Node.js (v12.0.0或更高版本)
+- npm (v6.0.0或更高版本)
+
+### 安装步骤
+
+1. 克隆项目到本地
+
+```bash
+git clone <项目仓库地址>
+cd knowledge-points-rag
+```
+
+2. 安装依赖
+
+```bash
+npm install
+```
+
+3. 启动服务
+
+```bash
+npm start
+```
+
+启动成功后，可通过以下地址访问：
+- 接口文档: http://localhost:3000/
+- 知识点搜索示例: http://localhost:3000/api/knowledge/search?keyword=集合
+- 题目推荐示例: http://localhost:3000/api/recommend/questions/1
+
+## 数据处理工具
+
+本项目提供了一系列数据处理工具，用于处理知识点和题目数据：
+
+1. 提取知识点：`npm run extract`
+2. 转换为RAG格式：`npm run convert`
+3. 处理题目数据：`npm run process-questions`
 
 ## 文件结构
 
@@ -16,127 +59,137 @@
 - `knowledge-points-rag.csv` - 最终生成的RAG格式CSV文件
 - `extract-knowledge-points.js` - 知识点提取脚本
 - `convert-to-rag-format.js` - RAG格式转换脚本
-- `question-example.json` - 原始题目数据示例（包含HTML标签的富文本格式）
-- `question-processed.json` - 处理后的题目数据（纯文本格式，适合AI处理）
+- `question-example.json` - 原始题目数据示例
+- `question-processed.json` - 处理后的题目数据
 - `process-questions.js` - 题目数据处理脚本
+- `knowledge-graph.js` - 知识图谱构建模块
+- `recommendation-engine.js` - 推荐引擎模块
+- `api.js` - API接口模块
+- `index.js` - 主程序入口
 
-## 转换逻辑
+## API接口说明
 
-### 1. 知识点提取过程
+### 1. 获取API信息
 
-`extract-knowledge-points.js` 脚本执行以下操作：
-
-- 读取原始知识点树JSON文件（`knowledge-point.json`）
-- 递归遍历知识点树结构
-- 提取每个节点的名称和层级关系
-- 构建扁平化的知识点树结构
-- 将结果保存为新的JSON文件（`knowledge-points-cleaned.json`）
-
-### 2. RAG格式转换过程
-
-`convert-to-rag-format.js` 脚本执行以下操作：
-
-- 读取扁平化的知识点JSON文件（`knowledge-points-cleaned.json`）
-- 递归处理知识点树，为每个节点分配唯一ID
-- 构建包含以下字段的数据结构：
-  - `id`: 知识点唯一标识符
-  - `name`: 知识点名称
-  - `path`: 知识点完整路径（从根节点到当前节点）
-  - `level`: 知识点在树中的层级
-  - `parent_id`: 父节点ID
-- 将结果转换为CSV格式并保存（`knowledge-points-rag.csv`）
-
-### 3. 题目数据处理过程
-
-`process-questions.js` 脚本执行以下操作：
-
-- 读取原始题目JSON文件（`question-example.json`）
-- 处理富文本格式，去除HTML标签（如`<br/>`）
-- 提取题干、选项、答案和解析等关键信息
-- 保留题目与知识点的关联关系
-- 将结果保存为适合AI语言模型处理的JSON格式（`question-processed.json`）
-
-## 使用方法
-
-### 提取知识点
-
-```bash
-node extract-knowledge-points.js
+- **URL**: `/`
+- **方法**: `GET`
+- **描述**: 获取API接口信息和可用端点列表
+- **响应示例**:
+```json
+{
+  "name": "知识点与题目推荐API",
+  "version": "1.0.0",
+  "endpoints": [
+    { "path": "/api/knowledge/search", "method": "GET", "description": "搜索知识点" },
+    { "path": "/api/knowledge/:id", "method": "GET", "description": "获取知识点详情" },
+    { "path": "/api/recommend/questions/:knowledgeId", "method": "GET", "description": "根据知识点推荐题目" },
+    { "path": "/api/recommend/questions", "method": "POST", "description": "根据多个知识点推荐题目" }
+  ]
+}
 ```
 
-这将从`knowledge-point.json`中提取知识点，并生成`knowledge-points-cleaned.json`文件。
+### 2. 搜索知识点
 
-### 转换为RAG格式
-
-```bash
-node convert-to-rag-format.js
+- **URL**: `/api/knowledge/search`
+- **方法**: `GET`
+- **参数**: 
+  - `keyword` (必填): 搜索关键词
+  - `limit` (可选): 返回结果数量限制，默认为10
+- **响应示例**:
+```json
+{
+  "results": [
+    { "id": "1", "name": "集合", "path": "数学/高中数学/集合" },
+    { "id": "2", "name": "集合的基本运算", "path": "数学/高中数学/集合/集合的基本运算" }
+  ]
+}
 ```
 
-这将从`knowledge-points-cleaned.json`中读取知识点树，并生成`knowledge-points-rag.csv`文件。
+### 3. 获取知识点详情
 
-### 处理题目数据
-
-```bash
-node process-questions.js
+- **URL**: `/api/knowledge/:id`
+- **方法**: `GET`
+- **参数**: 
+  - `id` (路径参数): 知识点ID
+- **响应示例**:
+```json
+{
+  "knowledgePoint": {
+    "id": "1",
+    "name": "集合",
+    "path": "数学/高中数学/集合",
+    "level": 3,
+    "parentId": "parent_id"
+  }
+}
 ```
 
-这将从`question-example.json`中读取原始题目数据，处理后生成`question-processed.json`文件。
+### 4. 根据知识点推荐题目
 
-## 输出格式说明
+- **URL**: `/api/recommend/questions/:knowledgeId`
+- **方法**: `GET`
+- **参数**: 
+  - `knowledgeId` (路径参数): 知识点ID
+  - `limit` (查询参数，可选): 返回结果数量限制，默认为10
+- **响应示例**:
+```json
+{
+  "recommendations": [
+    {
+      "id": "q001",
+      "content": "题目内容...",
+      "options": [{"choice": "A", "option": "选项A内容"}],
+      "answers": ["A"]
+    }
+  ]
+}
+```
 
-### 知识点RAG格式
+### 5. 根据多个知识点推荐题目
 
-生成的CSV文件包含以下列：
+- **URL**: `/api/recommend/questions`
+- **方法**: `POST`
+- **请求体**: 
+```json
+{
+  "knowledgeIds": ["1", "2", "3"],
+  "limit": 10
+}
+```
+- **响应示例**:
+```json
+{
+  "recommendations": [
+    {
+      "id": "q001",
+      "content": "题目内容...",
+      "options": [{"choice": "A", "option": "选项A内容"}],
+      "answers": ["A"]
+    }
+  ]
+}
+```
 
-- `id`: 知识点唯一ID（整数，从1开始）
-- `name`: 知识点名称
-- `path`: 知识点完整路径，使用 > 分隔各级节点
-- `level`: 知识点在树中的层级（整数，从1开始）
-- `parent_id`: 父节点ID（0表示顶级节点）
+## 系统架构
 
-### 题目处理格式
+本系统采用模块化设计，主要包含以下几个核心模块：
 
-处理后的题目JSON文件包含以下字段：
+1. **知识图谱模块** (knowledge-graph.js)
+   - 负责构建知识点和题目之间的关联关系
+   - 提供知识点查询和相似知识点推荐功能
 
-- `questionId`: 题目唯一标识符
-- `questionContent`: 题目内容（纯文本格式，已去除HTML标签）
-- `options`: 选项数组，每个选项包含：
-  - `choice`: 选项标识（如A、B、C、D）
-  - `option`: 选项内容（纯文本格式）
-- `answers`: 正确答案数组
-- `parse`: 题目解析（纯文本格式）
-- `explain`: 题目详细解释（纯文本格式，已将HTML换行标签转换为\n）
-- `knowledgePoints`: 关联知识点数组，每个知识点包含：
-  - `id`: 知识点ID
-  - `name`: 知识点名称
+2. **推荐引擎模块** (recommendation-engine.js)
+   - 基于知识图谱提供题目推荐功能
+   - 支持单知识点和多知识点的题目推荐
 
-## 应用场景
+3. **API接口模块** (api.js)
+   - 提供RESTful API接口
+   - 处理HTTP请求和响应
 
-### 知识点数据应用
+4. **数据处理工具**
+   - 知识点提取和转换工具
+   - 题目数据处理工具
 
-生成的CSV格式知识点数据可用于：
+## 许可证
 
-- 构建知识图谱
-- 作为RAG系统的检索源
-- 知识点分类和标注
-
-### 题目数据应用
-
-处理后的题目JSON数据可用于：
-
-- 智能题目推荐
-- 知识点与题目的关联分析
-
-## 自定义使用
-
-### 自定义知识点处理
-
-如需处理其他知识点树数据，请替换`knowledge-point.json`文件，并根据需要调整脚本中的数据处理逻辑。
-
-### 自定义题目处理
-
-如需处理其他格式的题目数据，请替换`question-example.json`文件，并根据需要调整`process-questions.js`脚本中的数据处理逻辑。特别是以下几点：
-
-1. 调整HTML标签处理函数`removeHtmlTags`以适应不同的HTML格式
-2. 修改`processQuestion`函数以适应不同的题目数据结构
-3. 根据需要添加或删除输出字段
+ISC
